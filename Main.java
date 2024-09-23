@@ -1,5 +1,6 @@
 import javax.xml.crypto.Data;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -64,15 +65,47 @@ public class Main {
                 break;
 
             case 2:
+
+                main.crearCarpeta(directorioFile);
+
                 break;
 
             case 3:
+
+                main.crearFichero(directorioFile);
+
                 break;
 
             case 4:
+
+                main.eliminar(directorioFile);
+
                 break;
 
             case 5:
+
+                if (directorioFile.isFile() && directorioFile.exists()) {
+
+                    File nuevoFichero;
+                    String nombre = "";
+
+                    System.out.println("Introduce el nombre del nuevo fihero");
+                    nombre = teclado.nextLine();
+
+                    nombre = directorio + nombre;
+
+                    nuevoFichero = new File(nombre);
+
+                    main.renombrar(directorioFile, nuevoFichero);
+
+                } else {
+
+                    System.out.println("No existe como fichero");
+
+                }
+
+
+
                 break;
 
             case 6:
@@ -136,7 +169,11 @@ public class Main {
             }
             System.out.println();
 
-            System.out.println("El espacio libre es: " + dir.getFreeSpace()/1024/1024/1024 + "");
+            System.out.println("El espacio libre es de: " + dir.getFreeSpace()/1024/1024/1024 + "GB");
+            System.out.println("El espacio disponible es de: " + dir.getUsableSpace()/1024/1024/1024 + "GB");
+            System.out.println("El espacio total es de: " + dir.getTotalSpace()/1024/1024/1024 + "GB");
+
+
 
         }
 
@@ -144,13 +181,50 @@ public class Main {
         System.out.println("---------------------------------------------------------------");
 
     }
-    public void crearCarpeta () {
+    public void crearCarpeta (File dir) {
+
+        if (dir.mkdirs()) {
+
+            System.out.println("Direcotrio creado existosamente");
+
+        }else {
+
+            System.out.println("Directorio no creado");
+
+        }
+
     }
-    public void crearFichero () {
+    public void crearFichero (File dir) {
+
+        try {
+            if (dir.createNewFile()) {
+                System.out.println("Fichero creado exitosamente");
+            } else {
+                System.out.println("El fichero ya existe");
+            }
+        } catch (IOException e) {
+            System.out.println("Error al crear el fichero");
+        }
+
+
     }
-    public void eliminar () {
+    public void eliminar (File dir) {
+
+        if (dir.delete()) {
+            System.out.println("Fichero eliminado exitosamente");
+        } else {
+            System.out.println("Error al eliminar el fichero");
+        }
+
     }
-    public void renombrar () {
+    public void renombrar (File dir, File renombre) {
+
+        if (dir.renameTo(renombre)) {
+            System.out.println("Fichero renombrado exitosamente");
+        } else {
+            System.out.println("Error al renombrar el fichero");
+        }
+
     }
 
 
